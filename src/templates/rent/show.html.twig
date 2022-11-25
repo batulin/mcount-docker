@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Заказ{% endblock %}
+
+{% block body %}
+    <h1>Заказ № {{ rent.id }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ rent.id }}</td>
+            </tr>
+            <tr>
+                <th>Дата заселения</th>
+                <td>{{ rent.beginDate ? rent.beginDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Дата выселения</th>
+                <td>{{ rent.endDate ? rent.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Клиент</th>
+                <td>{{ rent.client.secondName }} {{ rent.client.firstName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_rent_index') }}">Вернуться к списку</a>
+
+    <a href="{{ path('app_rent_edit', {'id': rent.id}) }}">Редактировать</a>
+
+{% endblock %}

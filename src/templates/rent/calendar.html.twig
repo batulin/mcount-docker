@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Список заказов{% endblock %}
+
+{% block body %}
+
+    <h1>{{ period.0|date('F') }} {{ period.0|date('Y') }}</h1>
+
+    <a href="{{ path('app_calendar', {'month': prevMonth|date('Y-m')}) }}">prev</a>
+    <a href="{{ path('app_calendar', {'month': nextMonth|date('Y-m')}) }}">next</a>
+
+    <div class="block_inner">
+
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Место</th>
+                <th scope="col">Заказы</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in calendar.items %}
+                <tr>
+                    <th>
+                        {{ item.number }}
+                    </th>
+                    <th>
+                        <div class="flex-container">
+                            {% for day in item.days %}
+                                <div class="flex-item">
+                                    {% if day.rentId %}
+                                        <a href="{{ path('app_rent_show', {'id': day.rentId}) }}">{{  day.dayNumber }}</a>
+                                    {% else %}
+                                        <a href="{{ path('app_rent_new') }}">{{ day.dayNumber }}</a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </th>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+{% endblock %}
+
+
+

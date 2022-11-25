@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Редактировать информацию о клиенте{% endblock %}
+
+{% block body %}
+    <h1>Редактировать информацию о клиенте</h1>
+
+    {{ form(form) }}
+
+    <a href="{{ path('app_client_index') }}">Вернутьск к списку</a>
+
+{% endblock %}

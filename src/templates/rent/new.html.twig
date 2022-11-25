@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавить заказ{% endblock %}
+
+{% block body %}
+    <h1>Добавить заказ</h1>
+
+    {{ form(form) }}
+
+    <a href="{{ path('app_rent_index') }}">Вернуться к списку</a>
+{% endblock %}

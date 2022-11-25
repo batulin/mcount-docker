@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Место № {{ place.number }}{% endblock %}
+
+{% block body %}
+    <h1>Место № {{ place.number }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ place.id }}</td>
+            </tr>
+            <tr>
+                <th>Номер</th>
+                <td>{{ place.number }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_place_index') }}">Вернуться к списку</a>
+
+    <a href="{{ path('app_place_edit', {'id': place.id}) }}">Редактировать</a>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Список мест{% endblock %}
+
+{% block body %}
+    <h1>Список мест</h1>
+
+    <a href="{{ path('app_place_new') }}">Добавить</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Номер</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for place in places %}
+            <tr>
+                <td>{{ place.id }}</td>
+                <td>{{ place.number }}</td>
+                <td>
+                    <a href="{{ path('app_place_show', {'id': place.id}) }}">Подробнее</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Спислк мест пуст!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
