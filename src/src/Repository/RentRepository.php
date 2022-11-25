@@ -51,13 +51,19 @@ class RentRepository extends ServiceEntityRepository
         return $rents;
     }
 
-    public function isBusy(Place $place):array
+    public function isBusy(array $places_ids, DateTimeImmutable $beginDate, DateTimeImmutable $endDate):bool
     {
-        $query = $this->_em->createQuery('SELECT r FROM App\Entity\Rent r WHERE (:place IN r.places)');
-        $query->setParameter('place', $place);
+        $query = $this->_em->createQuery('SELECT r FROM App\Entity\Rent r WHERE :places_ids MEMBER OF r.places AND ((:beginDate >= r.beginDate AND :beginDate <= r.endDate) OR (:endDate >= r.beginDate AND :endDate <= r.endDate) OR (:beginDate <= r.beginDate AND :endDate >= r.endDate))');
+        $query->setParameter('places_ids', $places_ids);
+        $query->setParameter('beginDate', $beginDate);
+        $query->setParameter('endDate', $endDate);
         $rents = $query->getResult();
 
-        return $rents;
+        if(!empty($rents)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

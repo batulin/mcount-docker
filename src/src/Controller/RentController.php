@@ -11,11 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTimeImmutable;
 
 #[Route('/rent')]
 class RentController extends AbstractController
 {
-    public function __construct(private RentService $rentService)
+    public function __construct(private RentService $rentService, public PlaceService $placeService)
     {
     }
     #[Route('/', name: 'app_rent_index', methods: ['GET'])]
@@ -28,15 +29,17 @@ class RentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_rent_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    #[Route('/new/{place_id}/{date}', name: 'app_rent_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, int $place_id, string $date): Response
     {
-        $rent = new Rent();
+        $rent = (new Rent())
+        ->setBeginDate(new DateTimeImmutable($date))
+        ->addPlace($this->placeService->placeById($place_id));
         $form = $this->createForm(RentType::class, $rent);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $rentRepository->save($rent, true);
+            $this->rentService->createRent($rent);
 
             return $this->redirectToRoute('app_rent_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -46,6 +49,25 @@ class RentController extends AbstractController
             'form' => $form,
         ]);
     }
+//
+//    #[Route('/new', name: 'app_rent_new', methods: ['GET', 'POST'])]
+//    public function new(Request $request): Response
+//    {
+//        $rent = new Rent();
+//        $form = $this->createForm(RentType::class, $rent);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $rentRepository->save($rent, true);
+//
+//            return $this->redirectToRoute('app_rent_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('rent/new.html.twig', [
+//            'rent' => $rent,
+//            'form' => $form,
+//        ]);
+//    }
     #[Route('/calendar/{month}', name: 'app_calendar', methods: ['GET'])]
     public function calendar($month): Response
     {

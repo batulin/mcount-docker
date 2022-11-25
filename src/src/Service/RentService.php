@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Rent;
+use App\Exception\SelectedPlacesIsBusyOnThisTimeException;
 use App\Exception\UnCorrectDateForRentException;
 use App\Model\Day;
 use App\Model\CalendarModel;
@@ -33,16 +34,23 @@ class RentService
        return $place = $this->places->find($place_id);
     }
 
-    public function createRent(Rent $rent):array
+    public function createRent(Rent $rent):void
     {
         $beginDate = $rent->getBeginDate();
         $endDate = $rent->getEndDate();
-        if($beginDate >= $endDate) {
+        if($beginDate > $endDate) {
             throw new UnCorrectDateForRentException();
         }
         $places = $rent->getPlaces();
-        $place = $places[0];
-        return $this->rents->isBusy($place);
+        $places_ids = [];
+        foreach ($places as $place) {
+            array_push($places_ids, $place->getId());
+        }
+        $busy = $this->rents->isBusy($places_ids, $beginDate, $endDate);
+        if($busy) {
+            throw new SelectedPlacesIsBusyOnThisTimeException();
+        }
+        $this->rents->save($rent, true);
     }
 
     public function placesWithRents(array $dateInfo):CalendarModel

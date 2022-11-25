@@ -31,7 +31,7 @@
                                     {% if day.rentId %}
                                         <a href="{{ path('app_rent_show', {'id': day.rentId}) }}">{{  day.dayNumber }}</a>
                                     {% else %}
-                                        <a href="{{ path('app_rent_new') }}">{{ day.dayNumber }}</a>
+{#                                        <a href="{{ path('app_rent_new') }}">{{ day.dayNumber }}</a>#}
                                     {% endif %}
                                 </div>
                             {% endfor %}
