@@ -45,3 +45,11 @@ services:
       PMA_HOST: mysql
       MYSQL_USERNAME: root
       MYSQL_ROOT_PASSWORD: secret
+
+    # node
+  node-service:
+    image: node:latest
+    container_name: node-container
+    volumes:
+      - ./src:/var/www/ishop
+    working_dir: /var/www/ishop

@@ -20,6 +20,14 @@
                 <td>{{ rent.endDate ? rent.endDate|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
+                <th>Места</th>
+                <td>
+                    {% for place in rent.places %}
+                    {{ place.number }},
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
                 <th>Клиент</th>
                 <td>{{ rent.client.secondName }} {{ rent.client.firstName }}</td>
             </tr>
