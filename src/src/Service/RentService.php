@@ -76,18 +76,23 @@ class RentService
             foreach ($dateInfo['period'] as $calendarDay) {
                 $day = new Day($calendarDay->format('d'));
 
-                foreach ($placeRents as $placeRent) {
-                    if ($placeRent->getBeginDate() <= $calendarDay && $placeRent->getEndDate() >= $calendarDay) {
-                        $day->setRentId($placeRent->getId());
-                        $day->setDate(null);
-                        break;
-                    } else {
-                        if(null === $day->getRentId()) {
-                            $day->setDate($calendarDay);
-                        } else {
+                if (!empty($placeRents)) {
+                    foreach ($placeRents as $placeRent) {
+                        if ($placeRent->getBeginDate() <= $calendarDay && $placeRent->getEndDate() >= $calendarDay) {
+                            $day->setRentId($placeRent->getId());
+                            $day->setDate(null);
                             break;
+                        } else {
+                            if (null === $day->getRentId()) {
+                                $day->setDate($calendarDay);
+                            } else {
+                                break;
+                            }
                         }
                     }
+                } else {
+                    $day->setDate($calendarDay);
+
                 }
                 $placeModel->addDay($day);
 

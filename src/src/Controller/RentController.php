@@ -34,6 +34,7 @@ class RentController extends AbstractController
     {
         $rent = (new Rent())
         ->setBeginDate(new DateTimeImmutable($date))
+        ->setEndDate(new DateTimeImmutable($date))
         ->addPlace($this->placeService->placeById($place_id));
         $form = $this->createForm(RentType::class, $rent);
         $form->handleRequest($request);

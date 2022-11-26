@@ -31,7 +31,10 @@
                                     {% if day.rentId %}
                                         <a href="{{ path('app_rent_show', {'id': day.rentId}) }}">{{  day.dayNumber }}</a>
                                     {% else %}
-{#                                        <a href="{{ path('app_rent_new') }}">{{ day.dayNumber }}</a>#}
+                                        {% if day.date %}
+                                        <a href="{{ path('app_rent_new', {'place_id': item.id, 'date': day.date|date('Y-m-d')}) }}">{{ day.dayNumber }}</a>
+{#                                        <a href='{{  path( "app_rent_new" { "place_id": item.id, "date": day.date|date("Y-m-d")}) }}'>{{ day.dayNumber }}</a>#}
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             {% endfor %}
